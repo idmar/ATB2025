@@ -5,13 +5,30 @@ import Section1 from './section1';
 import Section2 from './section2';
 import Section3 from './section3';
 import Footer from './footer';
+import MobileHero from './mobile-hero';
+import MobileSection1 from './mobile-section1';
+import MobileSection2 from './mobile-section2';
+import MobileSection3 from './mobile-section3';
+import MobileFooter from './mobile-footer';
+import MobileBackground from './MobileBackground';
 
 // CSS Filter Animation Hero Page
 // 模仿 animated-hero-css-filters 的结构，白色背景版本
 
 export default function Landing2Page() {
+  // ========== 所有钩子都在组件最顶层 ==========
+  const [isMobile, setIsMobile] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const checkDevice = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkDevice();
+    window.addEventListener('resize', checkDevice);
+    return () => window.removeEventListener('resize', checkDevice);
+  }, []);
 
   useEffect(() => {
     setLoaded(true);
@@ -24,6 +41,20 @@ export default function Landing2Page() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // ========== 移动端版本 ==========
+  if (isMobile) {
+    return (
+      <>
+        <MobileBackground />
+        <MobileHero />
+        <MobileSection1 />
+        <MobileSection2 />
+        <MobileSection3 />
+        <MobileFooter />
+      </>
+    );
+  }
 
   return (
     <>
