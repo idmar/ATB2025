@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 
 export default function MobileSection3() {
   return (
@@ -44,9 +45,61 @@ export default function MobileSection3() {
             <span className="mobile-stat-label">毕业年度</span>
           </div>
         </div>
+
+        {/* UNFOLD THE BIOTOPE 按钮 - 直接复制桌面端代码 */}
+        <div style={{ marginTop: '2.5rem', textAlign: 'center' }}>
+          <Link 
+            href="/" 
+            style={{
+              textDecoration: 'none',
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '12px',
+              padding: '16px 32px',
+              borderRadius: '50px',
+              background: 'linear-gradient(135deg, #B8E65C 0%, #FF8FB3 50%, #6BB3FA 100%)',
+              boxShadow: '0 4px 20px rgba(184, 230, 92, 0.4), 0 8px 40px rgba(255, 143, 179, 0.3), inset 0 1px 0 rgba(255,255,255,0.5)',
+              transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              border: 'none',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px) scale(1.02)';
+              e.currentTarget.style.boxShadow = '0 8px 30px rgba(184, 230, 92, 0.5), 0 12px 50px rgba(255, 143, 179, 0.4), inset 0 1px 0 rgba(255,255,255,0.6)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = '';
+              e.currentTarget.style.boxShadow = '0 4px 20px rgba(184, 230, 92, 0.4), 0 8px 40px rgba(255, 143, 179, 0.3), inset 0 1px 0 rgba(255,255,255,0.5)';
+            }}
+          >
+            <span style={{
+              fontFamily: '"HarmonyOS Sans", sans-serif',
+              fontWeight: '900',
+              fontSize: '1.2rem',
+              lineHeight: '1',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: '#ffffff',
+              whiteSpace: 'nowrap',
+              textShadow: '0 1px 2px rgba(0,0,0,0.3)',
+            }}>UNFOLD THE BIOTOPE!</span>
+            <span style={{
+              fontSize: '1.5rem',
+              color: '#ffffff',
+              textShadow: '0 1px 2px rgba(0,0,0,0.3)',
+              animation: 'bounceArrow 1.5s ease-in-out infinite',
+            }}>→</span>
+          </Link>
+          <style>{`
+            @keyframes bounceArrow {
+              0%, 100% { transform: translateX(0); }
+              50% { transform: translateX(8px); }
+            }
+          `}</style>
+        </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .mobile-section3 {
           position: relative;
           min-height: 100vh;
