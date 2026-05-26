@@ -25,8 +25,9 @@ export default function MobileFooter() {
         {/* 协办方 */}
         <div className="mobile-footer-group">
           <span className="mobile-footer-label">协办方：</span>
-          <div className="mobile-logo-row">
+          <div className="mobile-footer-xb">
             <img src="/XB.png" alt="协办方" className="mobile-footer-logo" />
+            <span className="mobile-footer-text">国富量子艺术有限公司</span>
           </div>
         </div>
       </div>
@@ -84,6 +85,20 @@ export default function MobileFooter() {
           width: 1px;
           height: 25px;
           background: #ccc;
+        }
+
+        .mobile-footer-xb {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 20px;
+        }
+
+        .mobile-footer-text {
+          font-family: 'SiyinSong';
+          font-size: 0.8rem;
+          color: #333;
+          white-space: nowrap;
         }
       `}</style>
     </footer>
