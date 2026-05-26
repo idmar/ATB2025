@@ -80,6 +80,7 @@ export default function BackgroundAnimations({ menuOpen = false }: BackgroundAni
   const containerRef = useRef<HTMLDivElement>(null);
   // 使用状态触发重新渲染
   const [key, setKey] = useState(0);
+  const [isReturning, setIsReturning] = useState(false);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
@@ -98,18 +99,23 @@ export default function BackgroundAnimations({ menuOpen = false }: BackgroundAni
     menuOpenRef.current = menuOpen;
   }, [menuOpen]);
 
-  // 监听路径变化，触发重新初始化
+  // 检测是否是从其他页面返回主页 - 不刷新页面，只重启动画
   useEffect(() => {
-    if (pathname === '/') {
-      // 重置 scrollY
-      scrollYRef.current = 0;
-      // 强制滚动到顶部
-      window.scrollTo(0, 0);
-      // 触发重新初始化
+    if (typeof window === 'undefined') return;
+    
+    const hasLeftHome = sessionStorage.getItem('hasLeftHome');
+    
+    if (hasLeftHome === 'true' && pathname === '/') {
+      // 用户从其他页面返回主页，重新初始化动画
+      sessionStorage.removeItem('hasLeftHome');
+      // 通过改变 key 触发主 useEffect 重新执行
       setKey(prev => prev + 1);
+    } else if (pathname === '/') {
+      sessionStorage.setItem('hasLeftHome', 'true');
     }
   }, [pathname]);
 
+  // 主初始化 useEffect - 依赖于 key，key 变化时会重新执行
   useEffect(() => {
     // 确保只在客户端执行
     if (typeof window === 'undefined') return;
@@ -120,11 +126,24 @@ export default function BackgroundAnimations({ menuOpen = false }: BackgroundAni
     // 强制滚动到顶部
     window.scrollTo(0, 0);
 
-    // 清理之前的渲染器（如果存在）
-    if (rendererRef.current && containerRef.current.contains(rendererRef.current.domElement)) {
-      containerRef.current.removeChild(rendererRef.current.domElement);
+    // 清理之前的渲染器
+    if (rendererRef.current) {
+      if (containerRef.current.contains(rendererRef.current.domElement)) {
+        containerRef.current.removeChild(rendererRef.current.domElement);
+      }
       rendererRef.current.dispose();
       rendererRef.current = null;
+    }
+
+    // 清理之前的动画帧
+    if (animationIdRef.current) {
+      cancelAnimationFrame(animationIdRef.current);
+      animationIdRef.current = 0;
+    }
+
+    // 清理容器内所有子元素（确保干净）
+    while (containerRef.current.firstChild) {
+      containerRef.current.removeChild(containerRef.current.firstChild);
     }
 
     // 创建场景
