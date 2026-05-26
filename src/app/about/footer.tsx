@@ -39,6 +39,8 @@ export default function Footer() {
             <div className="logo-group">
               {/* ★ XB.png - 协办方logo */}
               <img src="/XB.png" alt="协办方" className="footer-logo footer-logo-XB" />
+              {/* 国富量子艺术有限公司 */}
+              <span className="footer-text-partner">国富量子艺术有限公司</span>
             </div>
           </div>
         </div>
@@ -244,6 +246,18 @@ export default function Footer() {
           /* margin-left: 0;      向右移动 */
           /* margin-right: 0;     向左移动 */
           /* transform: scale(1); 放大/缩小 */
+        }
+
+        /* ============================================
+           协办方文字样式 - .footer-text-partner
+           ============================================ */
+        .footer-text-partner {
+          font-size: 0.9rem;                         /* 字体大小 */
+          font-family: 'SiyinSong';                  /* 字体样式：思源宋体 */
+          font-weight: 500;                          /* 字重 */
+          color: #333;                               /* 字体颜色：深灰色 */
+          white-space: nowrap;                       /* 不换行 */
+          margin-bottom: 0.2rem;                     /* 向下对齐 */
         }
 
         /* ============================================
