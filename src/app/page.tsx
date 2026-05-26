@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import { projects } from "@/lib/projects";
 import BackgroundAnimations from "@/components/BackgroundAnimations";
 
 export default function HomePage() {
   const router = useRouter();
+  const pathname = usePathname();
   const [isReady, setIsReady] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [hoveredId, setHoveredId] = useState<number | null>(null);
@@ -100,23 +101,40 @@ export default function HomePage() {
           isReady ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         }`}
       >
-        <div className="border border-black/10 rounded-full px-6 md:px-8 py-3 md:py-4 bg-white/80 backdrop-blur-sm shadow-lg shadow-black/5">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-1.5 h-1.5 rounded-full bg-[#D7E294]" />
+        <div className="rounded-full px-6 md:px-8 py-3 md:py-4 bg-gradient-to-r from-[#E8F594] via-[#F5B8C8] to-[#97BDFC] shadow-lg shadow-black/10">
+          <div className="flex items-center justify-between gap-4">
+            {/* 折叠生境按钮 */}
+            <button
+              onClick={() => router.push('/about')}
+              className="group relative flex items-center gap-2 px-4 md:px-5 py-2 rounded-full bg-black text-white text-xs md:text-sm font-medium tracking-[0.15em] uppercase
+                transition-all duration-300 hover:scale-105 active:scale-95
+                shadow-[0_0_12px_2px_rgba(0,0,0,0.3)] hover:shadow-[0_0_20px_4px_rgba(0,0,0,0.4)]"
+            >
+              <span className="relative z-10 flex flex-col gap-[3px]">
+                <span className="block w-3.5 h-[1.5px] bg-white" />
+                <span className="block w-3.5 h-[1.5px] bg-white" />
+                <span className="block w-3.5 h-[1.5px] bg-white" />
+              </span>
+              <span className="relative z-10">折叠生境</span>
+              <span className="absolute inset-0 rounded-full bg-gradient-to-r from-[#D7E294] via-[#EAB8C2] to-[#87ACDC] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            </button>
+
+            {/* ATB.STUDIO 居中 */}
+            <div className="flex items-center">
               <h1
-                className="text-sm md:text-base font-bold tracking-tight text-black"
+                className="text-base md:text-lg font-bold tracking-tight text-black"
                 style={{ fontFamily: "'Georgia', serif" }}
               >
                 ATB.STUDIO
               </h1>
             </div>
 
+            {/* Menu 按钮 */}
             <button
               onClick={openMenu}
               className="group relative flex items-center gap-2 px-4 md:px-5 py-2 rounded-full bg-black text-white text-xs md:text-sm font-medium tracking-[0.15em] uppercase
                 transition-all duration-300 hover:scale-105 active:scale-95
-                hover:shadow-lg hover:shadow-black/20"
+                shadow-[0_0_12px_2px_rgba(0,0,0,0.3)] hover:shadow-[0_0_20px_4px_rgba(0,0,0,0.4)]"
             >
               <span className="relative z-10">Menu</span>
               <span className="relative z-10 flex flex-col gap-[3px]">
