@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 /* ============================================
    Section 3 - 专业介绍区域
    设计风格：简约高级（参考用户提供的排版）
@@ -65,6 +67,12 @@ export default function Section3() {
               <span className="stat-label">毕业年度</span>
             </div>
           </div>
+
+          {/* ★ UNFOLD THE BIOTOPE 潮流按钮 */}
+          <Link href="/" className="section3-hero-link">
+            <span className="section3-hero-text">UNFOLD THE BIOTOPE!</span>
+            <span className="section3-hero-arrow">→</span>
+          </Link>
         </div>
       </div>
 
@@ -146,7 +154,7 @@ export default function Section3() {
            ============================================ */
         .section3-content {
           position: relative;
-          top: 60%;
+          top: 55%;
           transform: translateY(-50%);
           z-index: 10;
           max-width: 800px;
@@ -311,7 +319,7 @@ export default function Section3() {
           display: flex;
           justify-content: space-around; /* ★ 三个项目均匀分布 */
           width: 100%;
-          margin: 1rem 0;              /* ★ 统计区域与上方分隔线的间距 */
+          margin: -1.5rem 0;            /* ★ 统计区域与上方分隔线的间距（负数向上移动） */
           padding: 1.5rem 0;           /* ★ 统计区域内部上下内边距 */
         }
 
@@ -335,6 +343,68 @@ export default function Section3() {
           font-size: 0.8rem;      /* 修改：标签字号 */
           color: #999;            /* 修改：标签颜色 */
           letter-spacing: 0.05em; /* 修改：字间距 */
+        }
+
+        /* ============================================
+           UNFOLD THE BIOTOPE 艺术字按钮（渐变金属质感）
+           ============================================ */
+        /* ============================================
+           UNFOLD THE BIOTOPE 潮流按钮设计
+           ============================================ */
+        .section3-hero-link {
+          margin-top: 2.5rem;
+          text-decoration: none;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          gap: 12px;
+          padding: 16px 32px;
+          border-radius: 50px;
+          background: linear-gradient(135deg, #B8E65C 0%, #FF8FB3 50%, #6BB3FA 100%);
+          box-shadow: 
+            0 4px 20px rgba(184, 230, 92, 0.4),
+            0 8px 40px rgba(255, 143, 179, 0.3),
+            inset 0 1px 0 rgba(255,255,255,0.5);
+          transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+          border: none;
+        }
+
+        .section3-hero-text {
+          font: 900 1.2rem/1 "HarmonyOS Sans", sans-serif;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: #ffffff;
+          white-space: nowrap;
+          text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .section3-hero-arrow {
+          font-size: 1.5rem;
+          color: #ffffff;
+          animation: bounceArrow 1.5s ease-in-out infinite;
+          text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        @keyframes bounceArrow {
+          0%, 100% { transform: translateX(0); }
+          50% { transform: translateX(8px); }
+        }
+
+        /* Hover 效果 */
+        .section3-hero-link:hover {
+          transform: translateY(-4px) scale(1.02);
+          box-shadow: 
+            0 8px 30px rgba(215, 226, 148, 0.5),
+            0 12px 50px rgba(234, 184, 194, 0.4),
+            inset 0 1px 0 rgba(255,255,255,0.6);
+        }
+
+        .section3-hero-link:hover .section3-hero-arrow {
+          animation-duration: 0.6s;
+        }
+
+        .section3-hero-link:active {
+          transform: translateY(-2px) scale(1.01);
         }
 
         /* ============================================
@@ -379,6 +449,11 @@ export default function Section3() {
 
           .stat-number {
             font-size: 2.5rem;
+          }
+
+          .section3-hero-text {
+            font: 950 1.5rem/1 "HarmonyOS Sans", sans-serif;
+            white-space: nowrap; /* 强制不换行 */
           }
         }
       `}</style>
