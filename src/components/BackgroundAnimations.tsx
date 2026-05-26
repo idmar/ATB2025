@@ -7,6 +7,19 @@ import * as THREE from "three";
 // 品牌颜色（更鲜艳的版本）
 const COLORS = ["#E8F594", "#F5B8C8", "#F78C59", "#97BDFC"];
 
+// 图片纹理路径
+const IMAGE_TEXTURES = [
+  "/atb.png",
+  "/CB.png",
+];
+
+// 简化的图片显示配置
+const IMAGE_CONFIG = {
+  scale: 4, // 图片缩放大小
+  floatSpeed: 0.5, // 漂浮速度
+  floatAmount: 0.5, // 漂浮幅度
+};
+
 // 物理参数配置 - 优化版本
 const PHYSICS_CONFIG = {
     friction: 0.995,          // 摩擦力（接近真空状态，减速很慢）
@@ -62,12 +75,12 @@ const calculateBoundaries = (camera: THREE.PerspectiveCamera): DynamicBoundaries
 };
 
 interface BoxData {
-  mesh: THREE.Mesh;
+  mesh: THREE.Mesh | THREE.Sprite;
   velocity: THREE.Vector3;   // 速度向量
   angularVelocity: THREE.Vector3;  // 角速度向量
   floatOffset: number;       // 浮动相位偏移
   initialPos: THREE.Vector3; // 初始位置
-  size: number;              // 方块尺寸
+  size: number;              // 方块/图片尺寸
 }
 
 interface BackgroundAnimationsProps {
@@ -190,54 +203,116 @@ export default function BackgroundAnimations({ menuOpen = false }: BackgroundAni
 
     // 创建物理方块
     const boxes: BoxData[] = [];
-    for (let i = 0; i < BOX_CONFIG.count; i++) {
-      // 随机方块大小
-      const size = BOX_CONFIG.minSize + Math.random() * (BOX_CONFIG.maxSize - BOX_CONFIG.minSize);
-      const geometry = new THREE.BoxGeometry(size, size, size);
-      const material = new THREE.MeshStandardMaterial({
-        color: COLORS[i % 4],
-        roughness: 0.15,
-        metalness: 0.1,
-        emissive: COLORS[i % 4],
-        emissiveIntensity: 0.45,
-        flatShading: true,
-      });
-
-      const mesh = new THREE.Mesh(geometry, material);
-
-      // 根据视锥体边界随机分布
-      const halfSize = size / 2;
-      const posX = boundaries.x[0] + halfSize + Math.random() * (boundaries.x[1] - boundaries.x[0] - size);
-      const posY = boundaries.y[0] + halfSize + Math.random() * (boundaries.y[1] - boundaries.y[0] - size);
-      const posZ = boundaries.z[0] + halfSize + Math.random() * (boundaries.z[1] - boundaries.z[0] - size);
-
-      mesh.position.set(posX, posY, posZ);
-
-      // 随机初始旋转
-      mesh.rotation.set(
-        Math.random() * Math.PI * 2,
-        Math.random() * Math.PI * 2,
-        Math.random() * Math.PI * 2
+    const textureLoader = new THREE.TextureLoader();
+    const randomSpeed = 0.002;
+    
+    // 预加载所有图片纹理
+    const textures: THREE.Texture[] = [];
+    let loadedCount = 0;
+    
+    // 加载所有纹理
+    IMAGE_TEXTURES.forEach((url, index) => {
+      textureLoader.load(
+        url,
+        (texture) => {
+          texture.colorSpace = THREE.SRGBColorSpace;
+          textures[index] = texture;
+          loadedCount++;
+          
+          // 当所有纹理加载完成后，创建所有对象
+          if (loadedCount === IMAGE_TEXTURES.length) {
+            createAllObjects();
+          }
+        },
+        undefined,
+        (error) => {
+          textures[index] = textures[0]; // 使用第一个纹理作为fallback
+          loadedCount++;
+          if (loadedCount === IMAGE_TEXTURES.length) {
+            createAllObjects();
+          }
+        }
       );
+    });
+    
+    // 创建所有对象的函数
+    function createAllObjects() {
+      for (let i = 0; i < BOX_CONFIG.count; i++) {
+        // 随机方块大小
+        const size = BOX_CONFIG.minSize + Math.random() * (BOX_CONFIG.maxSize - BOX_CONFIG.minSize);
+        
+        let posX, posY, posZ;
+        
+        // 前两个图片放在屏幕中心区域
+        if (i < 2) {
+          posX = (Math.random() - 0.5) * 2; // 中心区域 +/-1
+          posY = (Math.random() - 0.5) * 2;
+          posZ = (Math.random() - 0.5) * 2;
+        } else {
+          // 其余方块根据视锥体边界随机分布
+          const halfSize = size / 2;
+          posX = boundaries.x[0] + halfSize + Math.random() * (boundaries.x[1] - boundaries.x[0] - size);
+          posY = boundaries.y[0] + halfSize + Math.random() * (boundaries.y[1] - boundaries.y[0] - size);
+          posZ = boundaries.z[0] + halfSize + Math.random() * (boundaries.z[1] - boundaries.z[0] - size);
+        }
+        
+        let mesh: THREE.Mesh | THREE.Sprite;
+        
+        // 前两个使用图片，其余使用3D方块
+        if (i < textures.length && textures[i] && i < 2) {
+          // 使用 Mesh + PlaneGeometry 显示图片
+          const geometry = new THREE.PlaneGeometry(IMAGE_CONFIG.scale, IMAGE_CONFIG.scale);
+          const material = new THREE.MeshBasicMaterial({
+            map: textures[i],
+            transparent: true,
+            opacity: 1,
+            side: THREE.DoubleSide,
+          });
+          
+          mesh = new THREE.Mesh(geometry, material);
+          // 确保面向相机
+          mesh.lookAt(camera.position);
+        } else {
+          // 3D方块
+          const geometry = new THREE.BoxGeometry(size, size, size);
+          const material = new THREE.MeshStandardMaterial({
+            color: COLORS[i % 4],
+            roughness: 0.15,
+            metalness: 0.1,
+            emissive: COLORS[i % 4],
+            emissiveIntensity: 0.45,
+            flatShading: true,
+          });
+          
+          mesh = new THREE.Mesh(geometry, material);
+          // 随机初始旋转
+          mesh.rotation.set(
+            Math.random() * Math.PI * 2,
+            Math.random() * Math.PI * 2,
+            Math.random() * Math.PI * 2
+          );
+        }
 
-      scene.add(mesh);
+        mesh.position.set(posX, posY, posZ);
+        scene.add(mesh);
 
-      // 给每个方块一个微小的随机初始速度
-      const randomSpeed = 0.002;
-      boxes.push({
-        mesh,
-        velocity: new THREE.Vector3(
-          (Math.random() - 0.5) * randomSpeed,
-          (Math.random() - 0.5) * randomSpeed,
-          (Math.random() - 0.5) * randomSpeed
-        ),
-        angularVelocity: new THREE.Vector3(0, 0, 0),  // 不自转
-        floatOffset: (i / BOX_CONFIG.count) * Math.PI * 2,
-        initialPos: new THREE.Vector3(posX, posY, posZ),
-        size,
-      });
+        boxes.push({
+          mesh,
+          velocity: new THREE.Vector3(
+            (Math.random() - 0.5) * randomSpeed,
+            (Math.random() - 0.5) * randomSpeed,
+            (Math.random() - 0.5) * randomSpeed
+          ),
+          angularVelocity: new THREE.Vector3(0, 0, 0),
+          floatOffset: (i / BOX_CONFIG.count) * Math.PI * 2,
+          initialPos: new THREE.Vector3(posX, posY, posZ),
+          size,
+        });
+      }
+      
+      console.log(`创建了 ${boxes.length} 个对象`);
+      boxesRef.current = boxes;
     }
-    boxesRef.current = boxes;
 
     // 鼠标移动处理
     const handleMouseMove = (e: MouseEvent) => {
@@ -445,7 +520,7 @@ export default function BackgroundAnimations({ menuOpen = false }: BackgroundAni
       handleCollisions();
 
       // 更新方块
-      boxesRef.current.forEach((box) => {
+      boxesRef.current.forEach((box, index) => {
         // 添加柔和的浮动力（三个轴都有浮动）
         const floatX = Math.sin(time * PHYSICS_CONFIG.floatSpeed + box.floatOffset) * PHYSICS_CONFIG.floatAmplitude;
         const floatY = Math.cos(time * PHYSICS_CONFIG.floatSpeed * 0.8 + box.floatOffset * 1.2) * PHYSICS_CONFIG.floatAmplitude;
@@ -466,6 +541,11 @@ export default function BackgroundAnimations({ menuOpen = false }: BackgroundAni
 
         // 检测边界碰撞并回弹
         handleBoundaryCollision(box);
+
+        // 如果是图片（PlaneGeometry），让它始终面向相机
+        if (index < IMAGE_TEXTURES.length && box.mesh instanceof THREE.Mesh) {
+          box.mesh.lookAt(camera.position);
+        }
 
         // 限制最大速度（增大限制以允许滚轮产生足够的速度）
         const maxSpeed = 0.2;
