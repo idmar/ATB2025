@@ -101,7 +101,7 @@ export default function HomePage() {
           isReady ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         }`}
       >
-        <div className="rounded-full px-6 md:px-8 py-3 md:py-4 bg-gradient-to-r from-[#E8F594] via-[#F5B8C8] to-[#97BDFC] shadow-lg shadow-black/10">
+        <div className="rounded-full px-6 md:px-8 py-3 md:py-4 bg-white/70 backdrop-blur-xl shadow-lg shadow-black/10 border border-white/50">
           <div className="flex items-center justify-between gap-4">
             {/* 折叠生境按钮 */}
             <button
