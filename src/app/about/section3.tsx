@@ -84,6 +84,13 @@ export default function Section3() {
           font-weight: normal;
           font-style: normal;
         }
+        
+        @font-face {
+          font-family: 'Gentium Plus';
+          src: url('/fonts/GentiumPlus-Italic.ttf') format('truetype');
+          font-weight: normal;
+          font-style: italic;
+        }
 
         /* ============================================
            第一层：section3-wrapper (最外层容器)
@@ -346,10 +353,7 @@ export default function Section3() {
         }
 
         /* ============================================
-           UNFOLD THE BIOTOPE 艺术字按钮（渐变金属质感）
-           ============================================ */
-        /* ============================================
-           UNFOLD THE BIOTOPE 潮流按钮设计
+           UNFOLD THE BIOTOPE 潮流按钮设计（白色磨砂玻璃质感）
            ============================================ */
         .section3-hero-link {
           margin-top: 2.5rem;
@@ -360,29 +364,32 @@ export default function Section3() {
           gap: 12px;
           padding: 16px 32px;
           border-radius: 50px;
-          background: linear-gradient(135deg, #B8E65C 0%, #FF8FB3 50%, #6BB3FA 100%);
+          /* 磨砂玻璃核心效果 */
+          background: rgba(255, 255, 255, 0.6);
+          backdrop-filter: blur(24px);
+          -webkit-backdrop-filter: blur(24px);
+          /* 多层边框增强玻璃质感 */
+          border: 1px solid rgba(255, 255, 255, 0.8);
           box-shadow: 
-            0 4px 20px rgba(184, 230, 92, 0.4),
-            0 8px 40px rgba(255, 143, 179, 0.3),
-            inset 0 1px 0 rgba(255,255,255,0.5);
+            0 8px 32px rgba(0, 0, 0, 0.08),
+            0 2px 8px rgba(0, 0, 0, 0.04),
+            inset 0 1px 0 rgba(255, 255, 255, 0.9),
+            inset 0 -1px 0 rgba(255, 255, 255, 0.3);
           transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-          border: none;
         }
 
         .section3-hero-text {
-          font: 900 1.2rem/1 "HarmonyOS Sans", sans-serif;
+          font: italic normal 900 1.2rem/1 "Gentium Plus", serif;
           letter-spacing: 0.12em;
           text-transform: uppercase;
-          color: #ffffff;
+          color: #1a1a1a;
           white-space: nowrap;
-          text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
 
         .section3-hero-arrow {
           font-size: 1.5rem;
-          color: #ffffff;
+          color: #1a1a1a;
           animation: bounceArrow 1.5s ease-in-out infinite;
-          text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
 
         @keyframes bounceArrow {
@@ -393,10 +400,12 @@ export default function Section3() {
         /* Hover 效果 */
         .section3-hero-link:hover {
           transform: translateY(-4px) scale(1.02);
+          background: rgba(255, 255, 255, 0.85);
           box-shadow: 
-            0 8px 30px rgba(215, 226, 148, 0.5),
-            0 12px 50px rgba(234, 184, 194, 0.4),
-            inset 0 1px 0 rgba(255,255,255,0.6);
+            0 12px 40px rgba(0, 0, 0, 0.12),
+            0 4px 16px rgba(0, 0, 0, 0.06),
+            inset 0 1px 0 rgba(255, 255, 255, 0.95),
+            inset 0 -1px 0 rgba(255, 255, 255, 0.4);
         }
 
         .section3-hero-link:hover .section3-hero-arrow {
