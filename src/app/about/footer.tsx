@@ -40,7 +40,7 @@ export default function Footer() {
               {/* ★ XB.png - 协办方logo */}
               <img src="/XB.png" alt="协办方" className="footer-logo footer-logo-XB" />
               {/* 国富量子艺术有限公司 */}
-              <span className="footer-text-partner">国富量子艺术有限公司</span>
+              <img src="/XB2.png" alt="国富量子艺术有限公司" className="footer-logo footer-logo-XB2" />
             </div>
           </div>
         </div>
@@ -246,6 +246,16 @@ export default function Footer() {
           /* margin-left: 0;      向右移动 */
           /* margin-right: 0;     向左移动 */
           /* transform: scale(1); 放大/缩小 */
+        }
+
+        /* ============================================
+           XB2.png - 国富量子艺术有限公司logo 单独样式
+           ============================================ */
+        .footer-logo-XB2 {
+          /* ★ 以下属性可单独调整 XB2.png */
+          height: 35px;           /* 调整高度 */
+          margin-bottom: 0.2rem;  /* 向下移动 */
+          margin-left: 1rem;      /* 与前一个logo保持间距 */
         }
 
         /* ============================================
