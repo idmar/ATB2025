@@ -33,7 +33,7 @@ export default function MobileSection3() {
         {/* 统计数据 */}
         <div className="mobile-stats">
           <div className="mobile-stat">
-            <span className="mobile-stat-number">16+</span>
+            <span className="mobile-stat-number">20+</span>
             <span className="mobile-stat-label">艺术作品</span>
           </div>
           <div className="mobile-stat">
@@ -41,7 +41,7 @@ export default function MobileSection3() {
             <span className="mobile-stat-label">主题展区</span>
           </div>
           <div className="mobile-stat">
-            <span className="mobile-stat-number">2025</span>
+            <span className="mobile-stat-number">2026</span>
             <span className="mobile-stat-label">毕业年度</span>
           </div>
         </div>
