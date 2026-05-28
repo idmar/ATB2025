@@ -27,7 +27,7 @@ export default function MobileFooter() {
           <span className="mobile-footer-label">协办方：</span>
           <div className="mobile-footer-xb">
             <img src="/XB.png" alt="协办方" className="mobile-footer-logo" />
-            <span className="mobile-footer-text">国富量子艺术有限公司</span>
+            <img src="/XB2.png" alt="国富量子艺术有限公司" className="mobile-footer-logo mobile-footer-logo-xb2" />
           </div>
         </div>
       </div>
@@ -92,6 +92,11 @@ export default function MobileFooter() {
           flex-direction: column;
           align-items: center;
           gap: 20px;
+        }
+
+        .mobile-footer-logo-xb2 {
+          height: 35px;           /* 调整高度 */
+          margin-top: 0;          /* 与前一个logo保持间距 */
         }
 
         .mobile-footer-text {
