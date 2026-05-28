@@ -55,7 +55,7 @@ export default function Section3() {
           {/* ★ 统计数据区域 */}
           <div className="section3-stats">
             <div className="stat-item">
-              <span className="stat-number">16+</span>
+              <span className="stat-number">20+</span>
               <span className="stat-label">艺术作品</span>
             </div>
             <div className="stat-item">
@@ -63,7 +63,7 @@ export default function Section3() {
               <span className="stat-label">主题展区</span>
             </div>
             <div className="stat-item">
-              <span className="stat-number">2025</span>
+              <span className="stat-number">2026</span>
               <span className="stat-label">毕业年度</span>
             </div>
           </div>
